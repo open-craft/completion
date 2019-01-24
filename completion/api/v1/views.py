@@ -24,6 +24,8 @@ try:
 except ImportError:
     pass
 
+from openedx.core.lib.api.authentication import OAuth2AuthenticationAllowInactiveUser
+
 from completion import waffle
 from completion.api.permissions import IsStaffOrOwner, IsUserInUrl
 from completion.models import BlockCompletion
@@ -33,6 +35,7 @@ class CompletionBatchView(APIView):
     """
     Handles API requests to submit batch completions.
     """
+    authentication_classes = (OAuth2AuthenticationAllowInactiveUser,)
     permission_classes = (permissions.IsAuthenticated, IsStaffOrOwner,)
     REQUIRED_KEYS = ['username', 'course_key', 'blocks']
 
