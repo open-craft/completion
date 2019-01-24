@@ -14,7 +14,6 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework import status
 
-from edx_rest_framework_extensions.authentication import JwtAuthentication, SessionAuthenticationAllowInactiveUser
 from opaque_keys.edx.keys import CourseKey, UsageKey
 from opaque_keys import InvalidKeyError
 from six import text_type
@@ -22,7 +21,6 @@ from six import text_type
 try:
     from student.models import CourseEnrollment
     from lms.djangoapps.course_api.blocks.api import get_blocks
-    from openedx.core.lib.api.authentication import OAuth2AuthenticationAllowInactiveUser
 except ImportError:
     pass
 
@@ -35,9 +33,6 @@ class CompletionBatchView(APIView):
     """
     Handles API requests to submit batch completions.
     """
-    authentication_classes = (
-        JwtAuthentication, SessionAuthenticationAllowInactiveUser, OAuth2AuthenticationAllowInactiveUser,
-    )
     permission_classes = (permissions.IsAuthenticated, IsStaffOrOwner,)
     REQUIRED_KEYS = ['username', 'course_key', 'blocks']
 
@@ -182,7 +177,7 @@ class SubsectionCompletionView(APIView):
     TODO: EDUCATOR-2358 Remove this class after the
     milestones experiment is no longer running.
     """
-    authentication_classes = (JwtAuthentication, SessionAuthenticationAllowInactiveUser,)
+
     permission_classes = (permissions.IsAuthenticated, IsUserInUrl)
 
     def get(self, request, username, course_key, subsection_id):
