@@ -181,6 +181,7 @@ class SubsectionCompletionView(APIView):
     milestones experiment is no longer running.
     """
 
+    authentication_classes = (OAuth2AuthenticationAllowInactiveUser,)
     permission_classes = (permissions.IsAuthenticated, IsUserInUrl)
 
     def get(self, request, username, course_key, subsection_id):
